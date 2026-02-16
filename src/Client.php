@@ -43,7 +43,7 @@ class Client
         array $additionalParams = []
     ): string {
         $url = self::$AUTH_URL_MTLS . '/auth/realms/broker/protocol/openid-connect/ext/par/request';
-        $requestData = \array_merge($additionalParams, [
+        $requestData = \array_merge([
             'state' => $state,
             'response_type' => 'code',
             'client_id' => $this->clientId,
@@ -51,7 +51,8 @@ class Client
             'scope' => 'sign ident',
             'redirect_uri' => $redirectUri,
             'claims' => $claims,
-        ]);
+        ], $additionalParams);
+        
         $request = (
             $this->requestFactory->createRequest('GET', $url)
             ->withHeader('Content-Type', 'application/json')
