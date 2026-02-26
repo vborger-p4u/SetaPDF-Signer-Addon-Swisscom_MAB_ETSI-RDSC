@@ -52,7 +52,7 @@ class Client
             'redirect_uri' => $redirectUri,
             'claims' => $claims,
         ], $additionalParams);
-        
+
         $request = (
             $this->requestFactory->createRequest('GET', $url)
             ->withHeader('Content-Type', 'application/json')
@@ -118,27 +118,31 @@ class Client
         return json_decode($response->getBody()->getContents(), true, \JSON_THROW_ON_ERROR);
     }
 
-    /**
-     * @param string $sad
-     * @param string $requestId
-     * @param array{hashAlgorithmOID: string, hashes: string[]} $documentDigests
-     * @param string $credentialId
-     * @param string $conformanceLevel Supported values: AdES-B-B, AdES-B-T, AdES-B-LT, AdES-B-LTA
-     * @param string $signatureFormat
-     * @return array{responseID: string, signatureObject: string[], validationInfo: array{ocsp: array, crl: string[]}}
-     * @throws ClientExceptionInterface
-     * @throws Exception
-     * @throws JsonException
-     */
+	/**
+	 * @param string $sad
+	 * @param string $requestId
+	 * @param array{hashAlgorithmOID: string, hashes: string[]} $documentDigests
+	 * @param string $credentialId
+	 * @param string $conformanceLevel Supported values: AdES-B-B, AdES-B-T, AdES-B-LT, AdES-B-LTA
+	 * @param string $signatureFormat
+	 * @param string|null $aud AUDIENCE: the clientid of MAB
+	 * @return array{responseID: string, signatureObject: string[], validationInfo: array{ocsp: array, crl: string[]}}
+	 * @throws Exception
+	 * @throws JsonException
+	 */
     public function sign(
         string $sad,
         string $requestId,
         array $documentDigests,
         string $credentialId,
         string $conformanceLevel = 'AdES-B-LT',
-        string $signatureFormat = 'P'
+        string $signatureFormat = 'P',
+        string $aud = null
     ): array {
         $url = self::$SIGN_URL . '/AIS-Server/etsi/standard/rdsc/v1/signatures/signDoc';
+		if($aud !== null) {
+			$url = $aud;
+		}
         $requestData = [
             'SAD' => $sad,
             'requestID' => $requestId,
