@@ -139,10 +139,11 @@ class Client
         string $signatureFormat = 'P',
         string $aud = null
     ): array {
-        $url = self::$SIGN_URL . '/AIS-Server/etsi/standard/rdsc/v1/signatures/signDoc';
-		if($aud !== null) {
-			$url = $aud;
-		}
+        $url = $aud;
+        if ($url === null) {
+            $url = self::$SIGN_URL . '/AIS-Server/etsi/standard/rdsc/v1/signatures/signDoc';
+        }
+		
         $requestData = [
             'SAD' => $sad,
             'requestID' => $requestId,
