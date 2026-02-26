@@ -125,7 +125,7 @@ class Client
 	 * @param string $credentialId
 	 * @param string $conformanceLevel Supported values: AdES-B-B, AdES-B-T, AdES-B-LT, AdES-B-LTA
 	 * @param string $signatureFormat
-	 * @param string|null $aud AUDIENCE: the clientid of MAB
+	 * @param string|null $aud AUDIENCE Parameter from the previous generated JWT token: the clientid of MAB
 	 * @return array{responseID: string, signatureObject: string[], validationInfo: array{ocsp: array, crl: string[]}}
 	 * @throws Exception
 	 * @throws JsonException
